@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 //#define Matrix(i,j) matrix[i][j-i-1]
-#define Matrix(i,j) (j>i) ? matrix[i][j-i-1] : matrix[j][i-j-1]
+//#define Matrix(i,j) (j>i) ? matrix[i][j-i-1] : matrix[j][i-j-1]
 #include <string.h>
 #include <time.h>
 #include <math.h>
@@ -33,7 +33,7 @@ typedef struct queue
     IntNode* top;
 } Queue;
 
-//Prototipos de Funções
+//Prototipos de FunÃ§Ãµes
 static inline IntNode queue_pop(Queue* q);
 static inline void queue_push(Queue* q, unsigned index);
 void print_queue(Queue* q);
@@ -235,7 +235,7 @@ void print_matrix(char** matrix){
 
 char** readMatrix(unsigned v_number){
 
-    //aloca Espaço para matriz
+    //aloca Espaï¿½o para matriz
 
     char** p;
     if((p = (char** ) calloc(v_number_global, sizeof(char*))) == NULL){
@@ -314,7 +314,7 @@ void print_list_int(IntNode** list){
 
 }
 
-// Lembrar ponteiros são passados por valor
+// Lembrar ponteiros sï¿½o passados por valor
 //Bota o ponteiro na lista
 IntNode* put_inode(IntNode* p ,unsigned int value){
     IntNode* new_pointer;
@@ -352,7 +352,7 @@ IntNode** read_list_int(unsigned v_number){
     return p;
 }
 
-// Dá pop na pilha
+// Dï¿½ pop na pilha
 static inline IntNode queue_pop(Queue* q){
     IntNode* p_v;
     IntNode vertice;
@@ -429,7 +429,7 @@ void print_queue(Queue* q){
     };
 }
 
-//Menor caminho de v1 até v2 pelo vetor de marcaçãp
+//Menor caminho de v1 atï¿½ v2 pelo vetor de marcaï¿½ï¿½p
 unsigned shortest_path(unsigned v2,unsigned* marking){
     unsigned d=0;
     unsigned first = ~(0x1);
@@ -517,7 +517,7 @@ unsigned diameter_matrix(char** matrix){
 
 }
 
-//Código modificado retirado da Internet
+//Cï¿½digo modificado retirado da Internet
 void bubble_sort(IntNode* start)
 {
     int swapped, i;
@@ -551,7 +551,7 @@ void bubble_sort(IntNode* start)
 unsigned** sorted_bfs_list(IntNode** list, unsigned index){
     //Define NULL como 2^32
     //E marcado como (2^32 -1)
-    //tendo em vista que nenhum grafo tem perto de 4 bilhões de vertices, isso não é um problema
+    //tendo em vista que nenhum grafo tem perto de 4 bilhï¿½es de vertices, isso nï¿½o ï¿½ um problema
     IntNode** pointer;
     for(pointer = list; pointer< (list + v_number_global);pointer++){
         bubble_sort(*pointer);
@@ -601,7 +601,7 @@ unsigned** sorted_bfs_list(IntNode** list, unsigned index){
 
     }
     /*
-    printf("Vetor de marcação [ \n");
+    printf("Vetor de marcaï¿½ï¿½o [ \n");
     for(unsigned i =0; i< v_number_global;i++){
         printf("index:%u marcado:%u \n", i, marking[i]);
     }
@@ -625,7 +625,7 @@ unsigned** sorted_bfs_list(IntNode** list, unsigned index){
 static inline unsigned** bfs_list(IntNode** list, unsigned index){
     //Define NULL como 2^32
     //E marcado como (2^32 -1)
-    //tendo em vista que nenhum grafo tem perto de 4 bilhões de vertices, isso não é um problema
+    //tendo em vista que nenhum grafo tem perto de 4 bilhï¿½es de vertices, isso nï¿½o ï¿½ um problema
     unsigned* marking;
     unsigned* level;
     register const unsigned none = ~(0x0);
@@ -671,7 +671,7 @@ static inline unsigned** bfs_list(IntNode** list, unsigned index){
 
     }
     /*
-    printf("Vetor de marcação [ \n");
+    printf("Vetor de marcaï¿½ï¿½o [ \n");
     for(unsigned i =0; i< v_number_global;i++){
         printf("index:%u marcado:%u \n", i, marking[i]);
     }
@@ -696,7 +696,7 @@ static inline unsigned** bfs_list(IntNode** list, unsigned index){
 unsigned** bfs_matrix(char** matrix, unsigned index){
     //Define NULL como 2^32
     //E marcado como (2^32 -1)
-    //tendo em vista que nenhum grafo tem perto de 4 bilhões de vertices, isso não é um problema
+    //tendo em vista que nenhum grafo tem perto de 4 bilhï¿½es de vertices, isso nï¿½o ï¿½ um problema
     unsigned* marking;
     unsigned* level;
     unsigned none = ~(0x0);
@@ -741,7 +741,7 @@ unsigned** bfs_matrix(char** matrix, unsigned index){
         }
     }
 
-    printf("Vetor de marcação [ \n");
+    printf("Vetor de marcaï¿½ï¿½o [ \n");
     for(unsigned i =0; i< v_number_global;i++)
         printf("index:%u marcado:%u \n", i, marking[i]);
     printf("]\n");
