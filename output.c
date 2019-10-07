@@ -5,7 +5,7 @@
 unsigned* degree_find_matrix(char** matrix,unsigned v_number){
     unsigned* degree_array;
     unsigned degree;
-    unsigned max_degree = ~(0x0);
+    //unsigned max_degree = ~(0x0);
     if((degree_array = (unsigned * )malloc(v_number*sizeof(unsigned))) == NULL){
         printf("Out of memory");
         exit(1);

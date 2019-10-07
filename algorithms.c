@@ -33,7 +33,7 @@ unsigned** bfs_list(IntNode** list, unsigned index, unsigned v_number){
     level[index] =0;
     queue_push(&q,index);
     IntNode* linked_list;
-    IntNode v,w;
+    IntNode v;
     while ( (q.top) != NULL)
     {
         v = queue_pop(&q);
@@ -103,7 +103,7 @@ unsigned** bfs_matrix(char** matrix, unsigned index,unsigned v_number){
     marking[index] = explored;
     level[index] =0;
     queue_push(&q,index);
-    IntNode v,w;
+    IntNode v;
     register unsigned j;
     char* row;
     while ( (q.top) != NULL)
@@ -167,7 +167,7 @@ unsigned* dfs_list(IntNode** list, unsigned index, unsigned v_number){
     };
 
     stack_push (&s,a);
-    IntNode u, v;
+    IntNode u;
     unsigned last_element = explored;
     IntNode* linked_list;
 
@@ -193,7 +193,7 @@ unsigned* dfs_list(IntNode** list, unsigned index, unsigned v_number){
 //Codigo modificado retirado da Internet
 void bubble_sort(IntNode* start)
 {
-    int swapped, i;
+    int swapped;
     unsigned temp;
     IntNode *ptr1;
     IntNode *lptr = NULL;
@@ -255,7 +255,7 @@ unsigned** sorted_bfs_list(IntNode** list, unsigned index,unsigned v_number){
     level[index] =0;
     queue_push(&q,index);
     IntNode* linked_list;
-    IntNode v,w;
+    IntNode v;
     while ( (q.top) != NULL)
     {
         v = queue_pop(&q);
@@ -295,8 +295,17 @@ unsigned** sorted_bfs_list(IntNode** list, unsigned index,unsigned v_number){
 
 }
 
+unsigned max_array(unsigned* array,unsigned v_number){
+    unsigned* p ;
+    register unsigned max = 0;
+    unsigned* size = (array + v_number);
+    for(p = array; p< size; p++)
+        max = (*p>max) ? *p :max;
+    return max;
+}
+
 unsigned diameter_matrix(char** matrix, unsigned v_number){
-    unsigned d = 0;
+    //unsigned d = 0;
     unsigned* level;
     unsigned max_graph =0;
     unsigned max =0 ;
@@ -311,18 +320,9 @@ unsigned diameter_matrix(char** matrix, unsigned v_number){
 
 }
 
-static inline unsigned max_array(unsigned* array,unsigned v_number){
-    unsigned* p ;
-    register unsigned max = 0;
-    unsigned* size = (array + v_number);
-    for(p = array; p< size; p++)
-        max = (*p>max) ? *p :max;
-    return max;
-}
-
 unsigned diameter_list(IntNode** list, unsigned v_number){
     //unsigned none = ~(0x0);
-    unsigned d = 0;
+    //unsigned d = 0;
     unsigned* level;
     register unsigned max_graph =0;
     unsigned max =0 ;
@@ -335,7 +335,7 @@ unsigned diameter_list(IntNode** list, unsigned v_number){
     return max_graph;
 }
 
-static inline unsigned* max_array_pseudo(unsigned* array,unsigned* response, unsigned v_number){
+unsigned* max_array_pseudo(unsigned* array,unsigned* response, unsigned v_number){
     register unsigned max = 0;
     unsigned index =0;
     for(unsigned i =0; i< v_number; i++)
@@ -345,6 +345,7 @@ static inline unsigned* max_array_pseudo(unsigned* array,unsigned* response, uns
         }
     response [0]= max;
     response [1] = index;
+    return response;
 }
 
 unsigned pseudo_diameter_list(IntNode** list, unsigned v_number){
@@ -382,3 +383,5 @@ unsigned shortest_path(unsigned v2,unsigned* marking){
     printf("%u\n",d);
     return d;
 }
+
+

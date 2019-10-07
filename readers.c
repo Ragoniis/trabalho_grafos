@@ -51,8 +51,8 @@ char** readMatrix(unsigned v_number, FILE* fp, unsigned* array_number){
     }
     */
     int a,b;
-    unsigned count=0;
-    unsigned count2=0;
+    //unsigned count=0;
+    //unsigned count2=0;
     while((fscanf(fp,"%u %u",&a,&b)) != EOF){
         //printf("a= %d b = %d %d\n ",a,b,v_number);
         /*
