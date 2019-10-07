@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "data_structures.h"
+#include <float.h>
+unsigned infinite = ~(0x0);
 
 
 IntNode* put_inode(IntNode* p ,unsigned int value){
@@ -18,7 +20,7 @@ IntNode* put_inode(IntNode* p ,unsigned int value){
 
 }
 
-WeightedN* put_inode(WeightedN* p ,unsigned int value,unsigned weight){
+WeightedN* put_wnode(WeightedN* p ,unsigned int value,double weight){
     WeightedN* new_pointer;
     if ((new_pointer = (WeightedN *) malloc(sizeof(WeightedN)))){
         new_pointer->value = value;
@@ -48,7 +50,8 @@ void queue_push(Queue* q, unsigned index){
     
     IntNode* last = q->rear;
     IntNode* new_pointer;
-    if ((new_pointer = (IntNode *) malloc(sizeof(IntNode)))){
+    new_pointer = (IntNode* )malloc(sizeof(IntNode));
+    if (1){
         if(q->top){
             new_pointer->value = index;
             new_pointer->next = NULL;
@@ -103,9 +106,10 @@ void initialize_PQ(PriorityQueue* pq,unsigned v_number){
         pq->heap = heap;
         pq->position_array = position_array;
         for(unsigned i=0; i<v_number;i++){
-            (heap[i]).key = (~(0x0));
+            (heap[i]).key = DBL_MAX;
             (heap[i]).value = i;
             position_array[i] = i;
+            //printf("i porra:%u position:%u \n",i,position_array[i]);
         }
     }else{
         printf("Error: Out of Memory \n");
@@ -130,15 +134,30 @@ void swap(unsigned a, unsigned b, PriorityQueue* pq){
 
 }
 
-HeapNode extract_min(PriorityQueue* pq){
+HeapNode* extract_min(PriorityQueue* pq){
     HeapNode* heap = pq->heap;
-    unsigned* position_array = pq->position_array;
+    if(((pq->last_element) == (infinite-1))){
+        return NULL;
+    }
+    //unsigned* position_array = pq->position_array;
     swap(0,pq->last_element,pq);
-    HeapNode min = heap[(pq->last_element)--];
+    HeapNode* min;
+    if(!(min = (HeapNode*) malloc(sizeof(HeapNode)))){
+        printf("Out of memory");
+        exit(1);
+    } 
+    (*min) = heap[(pq->last_element)--];
+
+    if(((pq->last_element) == (infinite))){
+        pq->last_element--;
+        return min;
+    }
+
     unsigned heap_postion = 0;
     unsigned son_position = (((heap[1]).key< (heap[2]).key ) || (pq->last_element ==1)) ?  1 : 2;
-    unsigned temp,left_son,right_son;
-
+    unsigned left_son,right_son;
+    //printf("FLAG\n");
+    //printf("last element:%u , infinite: %u \n",pq->last_element,infinite);
     while (( ( pq->last_element) >=((heap_postion<<1)+1) ) 
     && ( (heap[heap_postion].key) > (heap[son_position].key)))
     {
@@ -146,6 +165,7 @@ HeapNode extract_min(PriorityQueue* pq){
         heap_postion = son_position;
         left_son = ((heap_postion<<1)+1); 
         right_son= ((left_son+1) > (pq->last_element)) ? (left_son) : (left_son+1);
+        //printf("left : %u right : %u\n",left_son,right_son);
         son_position =  ( (heap[left_son].key) <= (heap[right_son].key) ) ? left_son : right_son ;
 
     }
@@ -153,7 +173,9 @@ HeapNode extract_min(PriorityQueue* pq){
 
 }
 
-void decrease_key(PriorityQueue* pq,unsigned vertex, unsigned key){
+
+
+void decrease_key(PriorityQueue* pq,unsigned vertex, double key){
     HeapNode* heap = (pq->heap);
     unsigned heap_postion = (pq->position_array)[vertex];
     unsigned parent_position =  (heap_postion & 1) ? ((heap_postion-1)/2) : (heap_postion/2 -1);

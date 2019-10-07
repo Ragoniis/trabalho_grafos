@@ -1,7 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "miscellaneous.h"
-unsigned infinite = ~(0x0);
+
+void print_array(unsigned* array,unsigned max){
+    printf("[ ");
+    for(unsigned i =0;i<(max-1);i++){
+        printf(" %u ,",array[i]);
+    }
+    printf(" %u ]\n",array[max-1]);
+}
 
 void print_list_int(IntNode** list,unsigned v_number){
     IntNode* index;
@@ -12,6 +19,23 @@ void print_list_int(IntNode** list,unsigned v_number){
         index = list[i];
         while (index!= NULL){
             printf("%d ", index->value);
+            index = index->next;
+        }
+        printf("\n");
+    }
+    printf("] \n");
+
+}
+
+void print_list_w_int(WeightedN** list,unsigned v_number){
+    WeightedN* index;
+    unsigned int i;
+    printf("Lista ->[\n");
+    for (i =0; i<v_number; i++ ){
+        printf("Index %d ->  ",i);
+        index = list[i];
+        while (index!= NULL){
+            printf("value :%d weight: %f", index->value,index->weight);
             index = index->next;
         }
         printf("\n");
@@ -44,15 +68,16 @@ void print_stack(Stack* stack){
 }
 
 void printHeap(PriorityQueue* pq){
+    unsigned infinite = ~(0x0);
     HeapNode element;
     printf("\n  [");
-    if(pq->last_element == infinite){
+    if(pq->last_element == (infinite-1)){
         printf("]\n");
         return;
     }
     for(unsigned i =0; i<=(pq->last_element);i++){
         element = (pq->heap)[i];
-        printf("K:%u V:%u,",element.key,element.value);
+        printf("K:%lf V:%u,",element.key,element.value);
     }
     printf("]\n");
 }

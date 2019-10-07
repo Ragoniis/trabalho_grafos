@@ -3,6 +3,42 @@
 #include <string.h>
 #include "data_structures.h"
 
+//status 0 = tudo zero, 1 = negativo, 2 = todos os pesos positvos maior que zero
+WeightedN** read_list_w_int(unsigned v_number,FILE* fp, unsigned* array_number,char* status){
+    WeightedN** p;
+    if((p = (WeightedN **) calloc(v_number,sizeof(WeightedN *)))== NULL){
+        printf("Out of Memory");
+        exit(1);
+
+    }
+    unsigned int a,b;
+    double c;
+    unsigned zero_number = 0;
+    (*status) = 2;
+    while((fscanf(fp,"%u %u %lf",&a,&b,&c)) != EOF){
+        //fprintf(out,"Fazendo a %d  e b %d %d \n",a,b,v_number);
+        if(c < 0.0){
+            (*status) = 1;
+
+        }else if(!(c)){
+            zero_number++;
+        }
+        p[a-1] = put_wnode(p[a-1],b-1,c);
+        p[b-1] = put_wnode(p[b-1],a-1,c);
+        (*array_number)++;
+        //printf("Index %d ",a);
+        //print_list_int(p[a]);
+        //printf("Index %d ",b);
+        //print_list_int(p[b]);
+        //printf("Atualmente p[a] : %u e p[b]: %u \n", p[a]->value,p[b]->value);
+    }
+
+    if(zero_number == (*array_number)){
+        (*status) = 0;
+    }
+
+    return p;
+}
 
 //testar o array number com ponteiros
 IntNode** read_list_int(unsigned v_number,FILE* fp, unsigned* array_number){

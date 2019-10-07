@@ -13,10 +13,11 @@ IntNode* put_inode(IntNode* p ,unsigned int value);
 
 typedef struct w_node{
     unsigned int value;
-    struct int_node* next;
-    unsigned weight;
+    struct w_node* next;
+    double weight;
 
 } WeightedN;
+WeightedN* put_wnode(WeightedN* p ,unsigned int value,double weight);
 
 struct stack
 {
@@ -31,7 +32,7 @@ typedef struct queue
 } Queue;
 
 typedef struct heap_node{
-    unsigned key;
+    double key;
     unsigned value;
 } HeapNode;
 
@@ -49,7 +50,7 @@ IntNode stack_pop(Stack* stack);
 void stack_push(Stack* stack, IntNode v);
 
 void initialize_PQ(PriorityQueue* pq,unsigned v_number);
-HeapNode extract_min(PriorityQueue* pq);
-void decrease_key(PriorityQueue* pq,unsigned vertex, unsigned key);
+HeapNode* extract_min(PriorityQueue* pq);
+void decrease_key(PriorityQueue* pq,unsigned vertex, double key);
 
 #endif
