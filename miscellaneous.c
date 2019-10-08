@@ -63,8 +63,9 @@ void print_stack(Stack* stack){
     IntNode v;
     while((stack->top) != NULL){
         v = stack_pop(stack);
-        printf("%d \n",v.value);
+        printf("--> %d ",v.value);
     }
+    printf("\n");
 }
 
 void printHeap(PriorityQueue* pq){

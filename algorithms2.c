@@ -6,18 +6,45 @@
 #include "miscellaneous.h"
 
 
-struct shortest_path_response
-{
-    unsigned distance;
-    unsigned* path;
-};
-
-struct shortest_path_response shortest_path_w(WeightedN** list,unsigned v_number, unsigned start, unsigned end, char status){
+// Retorna a distância como unsigned e o Caminho mínimo em forma de pilha
+ShortestPathW shortest_path_w(WeightedN** list,unsigned v_number, unsigned start, unsigned end, char status){
+    unsigned** arrays;
+    struct shortest_path_response response;
+    unsigned parent;
+    const unsigned explored = ~(0x1);
+    const unsigned infinite = ~(0x0);
+    Stack s ={ NULL };
+    IntNode v;
     if(status == 2){
-
+        arrays = dijkstra_list(list,v_number,start);
+        response.distance = arrays[0][end];
+        v.value = end;
+        stack_push(&s,v); 
+        while( (parent = arrays[1][v.value])!= infinite){
+            v.value = parent;
+            stack_push(&s,v);
+        }
+        response.path = s;
+    }else if(!(status)){
+        arrays = bfs_w_list(list,v_number,start);
+        response.distance = arrays[1][end]; // Pega o vetor level que é igual a resposta
+        //parent = arrays[0][end];
+        v.value = end;
+        stack_push(&s,v); 
+        while( (parent = arrays[0][v.value])!= explored){
+            v.value = parent;
+            stack_push(&s,v); 
+        }
+        response.path = s;
+        //printf("Shortest path ");
+        //print_stack(&s);
+        //printf("Distance: %u \n",response.distance);
+    }else{
+        printf("Grafo com pesos negativos. Não é possível calcular o menor caminho\n");
     }
-
+    return response;
 }
+
 unsigned** bfs_w_list(WeightedN** list, unsigned v_number,unsigned index){
     //Define NULL como 2^32
     //E marcado como (2^32 -1)
@@ -70,6 +97,9 @@ unsigned** bfs_w_list(WeightedN** list, unsigned v_number,unsigned index){
     }
     array[0]=  marking;
     array[1]=  level;
+    //printf("OLha a BFS\n");
+    //print_array(array[0],v_number);
+    //print_array(array[1],v_number);
     return array;
 
 }
@@ -122,8 +152,15 @@ unsigned** dijkstra_list(WeightedN** list,unsigned v_number,unsigned s){
     }
     response[0] = dist;
     response[1] = parent;
+    printf("OLha a djs\n");
+    print_array(response[0],v_number);
+    print_array(response[1],v_number);
     return response;
 
+}
+
+WeightedN** minimum_spanning_tree(WeightedN** list, unsigned v_number){
+    
 }
 
 
