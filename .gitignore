@@ -1,7 +1,7 @@
  Prerequisites
 *.d
 
-
+#output_mst
 .vscode
 #arquivo de output
 output
