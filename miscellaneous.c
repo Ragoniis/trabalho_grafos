@@ -1,7 +1,38 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include "miscellaneous.h"
 
+//Acha o máximo de uma array considerando
+unsigned especial_max_array(double* array,unsigned v_number){
+    //const unsigned infinite = ~(0x0);
+    double* p ;
+    register double max = 0.0;
+    double* size = (array + v_number);
+    for(p = array; p< size; p++)
+        max = (*p>max) ? *p :max;
+    return max;
+}
+
+
+unsigned max_array(unsigned* array,unsigned v_number){
+    unsigned* p ;
+    register unsigned max = 0;
+    unsigned* size = (array + v_number);
+    for(p = array; p< size; p++)
+        max = (*p>max) ? *p :max;
+    return max;
+}
+
+Edge* put_edge(Edge* p ,unsigned vertex1, unsigned vertex2 , double weight){
+    Edge* new_pointer;
+    if ((new_pointer = (Edge *) malloc(sizeof(Edge)))){
+        new_pointer->vertex1 = vertex1;
+        new_pointer->vertex2 = vertex2;
+        new_pointer->weight = weight;
+        new_pointer->next = p;
+        return new_pointer;
+    }
+    exit(1);
+
+}
 void print_array(unsigned* array,unsigned max){
     printf("[ ");
     for(unsigned i =0;i<(max-1);i++){
@@ -44,10 +75,18 @@ void print_list_w_int(WeightedN** list,unsigned v_number){
 
 }
 
+void print_w_matrix(double** matrix,unsigned v_number){
+    for (unsigned i= 0;  i< v_number; i++){
+        for(unsigned j = (i+1); j< v_number;j++ ){
+            printf("linha %d coluna %d %lf \n",i,j,matrix[i][j]);
+        }
+    }
+}
 void print_matrix(char** matrix,unsigned v_number){
     for (unsigned i= 0;  i< v_number; i++){
         for(unsigned j = (i+1); j< v_number;j++ ){
-            printf("linha %d coluna %d %i \n",i,j,matrix[i][j]);}
+            printf("linha %d coluna %d %i \n",i,j,matrix[i][j]);
+        }
     }
 }
 
@@ -63,7 +102,7 @@ void print_stack(Stack* stack){
     IntNode v;
     while((stack->top) != NULL){
         v = stack_pop(stack);
-        printf("--> %d ",v.value);
+        printf("--> %d ",(v.value+1));//+1 pela normalização do 1 para 0
     }
     printf("\n");
 }
@@ -78,6 +117,9 @@ void printHeap(PriorityQueue* pq){
     }
     for(unsigned i =0; i<=(pq->last_element);i++){
         element = (pq->heap)[i];
+        if(element.key == DBL_MAX){
+            element.key = -1;   
+        }
         printf("K:%lf V:%u,",element.key,element.value);
     }
     printf("]\n");

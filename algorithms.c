@@ -38,31 +38,17 @@ unsigned** bfs_list(IntNode** list, unsigned index, unsigned v_number){
     {
         v = queue_pop(&q);
         linked_list=list[v.value];
-        //printf("linked_list->value \n");
         while (linked_list!= NULL){
             if((marking[linked_list->value]) == none){
                 marking[linked_list->value] = v.value;
                 level[linked_list->value] = level[v.value] +1;
                 queue_push(&q,linked_list->value);
             }
-            //printf("Explorando %d ", linked_list->value);
             linked_list = linked_list->next;
         }
 
 
     }
-    /*
-    printf("Vetor de marca��o [ \n");
-    for(unsigned i =0; i< v_number_global;i++){
-        printf("index:%u marcado:%u \n", i, marking[i]);
-    }
-    printf("]\n");
-    printf("Vetor de level [ \n");
-    for(unsigned i =0; i< v_number_global;i++){
-        printf("index:%u marcado:%u \n", i, level[i]);
-    }
-    printf("]\n");
-    */
     unsigned** array;
     if((array = (unsigned ** ) malloc(v_number*sizeof(unsigned)*2)) == NULL){
         printf("Out of memory");
@@ -293,15 +279,6 @@ unsigned** sorted_bfs_list(IntNode** list, unsigned index,unsigned v_number){
 
     return array;
 
-}
-
-unsigned max_array(unsigned* array,unsigned v_number){
-    unsigned* p ;
-    register unsigned max = 0;
-    unsigned* size = (array + v_number);
-    for(p = array; p< size; p++)
-        max = (*p>max) ? *p :max;
-    return max;
 }
 
 unsigned diameter_matrix(char** matrix, unsigned v_number){

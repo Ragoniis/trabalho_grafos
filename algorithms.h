@@ -1,6 +1,7 @@
 #ifndef ALGORITHMS
 #define ALGORITHMS
 #include "data_structures.h"
+#include "miscellaneous.h"
 unsigned** bfs_list(IntNode** list, unsigned index, unsigned v_number);
 unsigned** bfs_matrix(char** matrix, unsigned index,unsigned v_number);
 unsigned* dfs_list(IntNode** list, unsigned index, unsigned v_number);

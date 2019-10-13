@@ -5,6 +5,27 @@
 #include <float.h>
 unsigned infinite = ~(0x0);
 
+/*
+int main(void){
+    PriorityQueue pq;
+    initialize_PQ(&pq,1000000);
+    double value;
+    for(unsigned i =0; i<1000000; i++){
+        value = (double) (rand()%1000000);
+        decrease_key(&pq,i,value);
+    }
+    double last_key = 0;
+    HeapNode* hn;
+    for(unsigned i =0; i<1000000; i++){
+        hn = extract_min(&pq);
+        if(hn->key < last_key){
+            printf("Deu erro k:%lf e lk: %lf \n",last_key,hn->key);
+        }
+        last_key = hn->key; 
+    }
+    printf("Resultado\n");
+}
+*/
 
 IntNode* put_inode(IntNode* p ,unsigned int value){
     IntNode* new_pointer;
@@ -139,7 +160,6 @@ HeapNode* extract_min(PriorityQueue* pq){
     if(((pq->last_element) == (infinite-1))){
         return NULL;
     }
-    //unsigned* position_array = pq->position_array;
     swap(0,pq->last_element,pq);
     HeapNode* min;
     if(!(min = (HeapNode*) malloc(sizeof(HeapNode)))){
@@ -154,21 +174,25 @@ HeapNode* extract_min(PriorityQueue* pq){
     }
 
     unsigned heap_postion = 0;
-    unsigned son_position = (((heap[1]).key< (heap[2]).key ) || (pq->last_element ==1)) ?  1 : 2;
-    unsigned left_son,right_son;
+    //unsigned son_position = (((heap[1]).key< (heap[2]).key ) || (pq->last_element ==1)) ?  1 : 2;
+    unsigned left_son,right_son,son_position;
     //printf("FLAG\n");
     //printf("last element:%u , infinite: %u \n",pq->last_element,infinite);
-    while (( ( pq->last_element) >=((heap_postion<<1)+1) ) 
-    && ( (heap[heap_postion].key) > (heap[son_position].key)))
-    {
-        swap(heap_postion,son_position, pq);
-        heap_postion = son_position;
+    while(( pq->last_element) >=((heap_postion<<1)+1)){
         left_son = ((heap_postion<<1)+1); 
         right_son= ((left_son+1) > (pq->last_element)) ? (left_son) : (left_son+1);
-        //printf("left : %u right : %u\n",left_son,right_son);
-        son_position =  ( (heap[left_son].key) <= (heap[right_son].key) ) ? left_son : right_son ;
-
+        son_position =  ( (heap[left_son].key) <= (heap[right_son].key) ) 
+        ? left_son 
+        : right_son ;
+        if(((heap[heap_postion].key) > (heap[son_position].key))){
+            swap(heap_postion,son_position, pq);
+            heap_postion = son_position;
+        }else{
+            break;
+        }
+        
     }
+   
     return min;
 
 }
@@ -178,13 +202,16 @@ HeapNode* extract_min(PriorityQueue* pq){
 void decrease_key(PriorityQueue* pq,unsigned vertex, double key){
     HeapNode* heap = (pq->heap);
     unsigned heap_postion = (pq->position_array)[vertex];
-    unsigned parent_position =  (heap_postion & 1) ? ((heap_postion-1)/2) : (heap_postion/2 -1);
-    (heap[heap_postion]).key = key; 
+    (heap[heap_postion]).key = key;
+    if(!heap_postion){
+        return;
+    }
+    unsigned parent_position =  (heap_postion & 1) ? ((heap_postion-1)/2) : (heap_postion/2 -1); 
 
-    while((heap_postion) && ((heap[heap_postion]).key) < ((heap[parent_position]).key)){
+    while((heap_postion) && (((heap[heap_postion]).key) < ((heap[parent_position]).key))){
         swap(heap_postion,parent_position,pq);
         heap_postion = parent_position;
-        parent_position =  (heap_postion & 1)?((heap_postion-1)/2):(heap_postion/2 -1);
+        parent_position =  (heap_postion & 1)? ((heap_postion-1)/2): (heap_postion/2 -1);
     }
     
 }

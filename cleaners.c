@@ -1,6 +1,20 @@
 #include "cleaners.h"
-#include <stdio.h>
-#include <stdlib.h>
+
+void free_w_list(WeightedN** list, unsigned v_number){
+    WeightedN* p;
+    WeightedN* pointer;
+    //IntNode** size = list+v_number;
+    for(unsigned i =0 ;i<v_number;i++){
+        pointer = list[i];
+        while((pointer)!=NULL){
+            p = pointer->next;
+            free(pointer);
+            pointer = p;
+        }
+    }
+    free(list);
+}
+
 
 void free_list(IntNode** list, unsigned v_number){
     IntNode* p;
