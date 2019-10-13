@@ -1,7 +1,23 @@
 #include "miscellaneous.h"
 
-//Acha o máximo de uma array considerando
-unsigned especial_max_array(double* array,unsigned v_number){
+
+//acha o caminho com u vetor de parent
+void find_path(Stack* c,unsigned end, unsigned* parents){
+    const unsigned no_parent = ~(0x1);
+    IntNode v;
+    v.value = end;
+    unsigned parent;
+    stack_push(c,v);
+    while( (parent = parents[v.value])!= no_parent){
+        v.value = parent;
+        stack_push(c,v);
+    }
+    free(parents);
+}
+
+
+//Acha o máximo de uma array de doubles
+double especial_max_array(double* array,unsigned v_number){
     //const unsigned infinite = ~(0x0);
     double* p ;
     register double max = 0.0;

@@ -2,19 +2,6 @@
 
 
 
-//acha o caminho com u vetor de parent
-void find_path(Stack* c,unsigned end, unsigned* parents){
-    const unsigned no_parent = ~(0x1);
-    IntNode v;
-    v.value = end;
-    unsigned parent;
-    stack_push(c,v);
-    while( (parent = parents[v.value])!= no_parent){
-        v.value = parent;
-        stack_push(c,v);
-    }
-    free(parents);
-}
 
 // Retorna a distância como unsigned e o Caminho mínimo em forma de pilha
 ShortestPathW shortest_path_w(WeightedN** list,unsigned v_number, unsigned start, unsigned end, char status){
@@ -143,6 +130,7 @@ void** dijkstra_list(WeightedN** list,unsigned v_number,unsigned s){
     WeightedN* pointer;
     unsigned heap_position;
     while((v = extract_min(pq))){
+        //printf("Flaaaag !!! v->value: %u\n",v->value);
         pointer = list[v->value];
         dist[v->value] = v->key;
         while (pointer!= NULL){
@@ -256,7 +244,7 @@ double eccentricity_list(WeightedN** list, unsigned v_number, unsigned vertex,un
         //Grafos sem peso
         unsigned** response;
         response = bfs_w_list(list,v_number,vertex);
-        eccentricity= max_array(response[1],v_number);
+        eccentricity= (double) max_array(response[1],v_number);
         free(response[0]);
         free(response[1]);
         free(response);

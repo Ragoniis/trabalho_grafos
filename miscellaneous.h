@@ -21,5 +21,6 @@ void print_array(unsigned* array,unsigned max);
 unsigned max_array(unsigned* array,unsigned v_number);
 void print_w_matrix(double** matrix,unsigned v_number);
 Edge* put_edge(Edge* p ,unsigned vertex1, unsigned vertex2 , double weight);
-unsigned especial_max_array(double* array,unsigned v_number);
+double especial_max_array(double* array,unsigned v_number);
+void find_path(Stack* c,unsigned end, unsigned* parents);
 #endif

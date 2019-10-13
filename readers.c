@@ -7,7 +7,9 @@
 double** read_matrix_w(unsigned* v_number_pointer, unsigned* array_number,char* status,char* file_name){
     FILE *fp;
     fp=fopen(file_name, "r");
-    fscanf(fp,"%u", v_number_pointer);
+    char s[100];
+    fgets(s,100,fp);
+    sscanf(s,"%u",v_number_pointer);    
     unsigned v_number = *v_number_pointer;
     //aloca Espaco para matriz
     double** p;
@@ -32,23 +34,33 @@ double** read_matrix_w(unsigned* v_number_pointer, unsigned* array_number,char* 
         }
 
     }
-    unsigned a,b; 
+    unsigned a,b,d; 
     double c;
-    unsigned ones_number=0;
     (*status) = 2;
-    while((fscanf(fp,"%u %u %lf",&a,&b,&c)) != EOF){
-        if(c < 0.0){
-            (*status) = 1;
-            printf("flaaag c:%lf e linha: %u",c,*array_number);
-        }else if(c == 1){
-            ones_number++;
-        }
-        p[a-1][b-1] =c;
-        p[b-1][a-1] =c;
-        (*array_number)++;
-    }
-    if(ones_number == (*array_number)){
+    char line[100];
+    fgets(line,100,fp);
+    d = sscanf(line, "%u %u %lf",&a,&b,&c);
+    //Não há pessos no grafo
+    if(d == 2){
         (*status) = 0;
+        do
+        {
+            p[a-1][b-1] =1.0;
+            p[b-1][a-1] =1.0;
+            (*array_number)++;
+        } while ((fscanf(fp,"%u %u",&a,&b)) != EOF);
+
+    }else {
+        do
+        {
+            if(c < 0.0){
+                (*status) = 1;
+            }
+            p[a-1][b-1] =c;
+            p[b-1][a-1] =c;
+        (*array_number)++;
+        } while ((fscanf(fp,"%u %u %lf",&a,&b,&c)) != EOF);
+        
     }
     fclose(fp);
     return p;
@@ -57,11 +69,13 @@ double** read_matrix_w(unsigned* v_number_pointer, unsigned* array_number,char* 
 
 
 
-//status 0 = tudo um, 1 = negativo, 2 = todos os pesos positvos maior que zero
+//status 0 = grafo sem pesos, 1 = negativo, 2 = todos os pesos positvos maior que zero
 WeightedN** read_list_w_int(unsigned* v_number_pointer, unsigned* array_number,char* status, char* file_name){
     FILE *fp;
     fp=fopen(file_name, "r");
-    fscanf(fp,"%u", v_number_pointer);
+    char s[100];
+    fgets(s,100,fp);
+    sscanf(s,"%u",v_number_pointer);
     unsigned v_number = *v_number_pointer;
     WeightedN** p;
     if((p = (WeightedN **) calloc(v_number,sizeof(WeightedN *)))== NULL){
@@ -69,25 +83,35 @@ WeightedN** read_list_w_int(unsigned* v_number_pointer, unsigned* array_number,c
         exit(1);
 
     }
-    unsigned int a,b;
+    unsigned int a,b,d;
     double c;
-    unsigned ones_number = 0;
     (*status) = 2;
-    while((fscanf(fp,"%u %u %lf",&a,&b,&c)) != EOF){
-        //fprintf(out,"Fazendo a %d  e b %d %d \n",a,b,v_number);
-        if(c < 0.0){
+    char line[100];
+    if(!fgets(line,100,fp)){
+        return p;
+    }
+    d = sscanf(line, "%u %u %lf",&a,&b,&c);
+    if(d == 2){
+        (*status) = 0;
+        do
+        {
+            p[a-1] = put_wnode(p[a-1],b-1,1);
+            p[b-1] = put_wnode(p[b-1],a-1,1);
+            (*array_number)++;
+        } while ((fscanf(fp,"%u %u",&a,&b)) != EOF);
+        
+    }else
+    {
+        do {
+            if(c < 0.0){
             (*status) = 1;
 
-        }else if(!(c)){
-            ones_number++;
-        }
-        p[a-1] = put_wnode(p[a-1],b-1,c);
-        p[b-1] = put_wnode(p[b-1],a-1,c);
-        (*array_number)++;
-    }
-
-    if(ones_number == (*array_number)){
-        (*status) = 0;
+            }
+            p[a-1] = put_wnode(p[a-1],b-1,c);
+            p[b-1] = put_wnode(p[b-1],a-1,c);
+            (*array_number)++;
+        } while ((fscanf(fp,"%u %u %lf",&a,&b,&c)) != EOF);
+    
     }
     fclose(fp);
     return p;

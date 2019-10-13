@@ -1,6 +1,7 @@
 #ifndef DATA_STRUCTURES
 #define DATA_STRUCTURES
 
+
 struct int_node
 {
     /* data */
@@ -42,6 +43,13 @@ typedef struct priority_queue
     unsigned* position_array;
     unsigned last_element;
 } PriorityQueue;
+
+typedef struct shortest_path_response
+{
+    double distance;
+    Stack path;
+} ShortestPathW;
+
 
 IntNode queue_pop(Queue* q);
 void queue_push(Queue* q, unsigned index);

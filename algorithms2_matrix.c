@@ -1,5 +1,45 @@
 #include "algorithms2_matrix.h"
 
+
+
+// Retorna a distância como unsigned e o Caminho mínimo em forma de pilha
+ShortestPathW shortest_path_w_matrix(double** matrix,unsigned v_number, unsigned start, unsigned end, char status){
+    //const unsigned infinite = ~(0x0);
+    double* distance;
+    unsigned* parent;
+    struct shortest_path_response response;
+    Stack s ={ NULL };
+    if(status == 2){
+        void** dijkstra;
+        dijkstra = dijkstra_matrix(matrix,v_number,start);
+        distance = (double*)  dijkstra[0];
+        parent = (unsigned*) dijkstra[1];
+        response.distance = distance[end];
+        if(distance[end] == DBL_MAX){
+            printf("∞\n");
+        }else{
+            find_path(&s,end, parent);   
+        }
+        free(dijkstra[0]);
+        free(dijkstra);
+        response.path = s;
+    }else if(!(status)){
+        unsigned** bfs;
+        bfs = bfs_matrix_w(matrix,v_number,start);
+        parent = bfs[0];
+        response.distance = (double) bfs[1][end]; // Pega o vetor level que é igual a resposta
+        find_path(&s,end, parent);
+        free(bfs[1]);
+        free(bfs);
+        response.path = s;
+    }else{
+        printf("Grafo com pesos negativos. Não é possível calcular o menor caminho\n");
+    }
+    return response;
+}
+
+
+
 unsigned** bfs_matrix_w(double** matrix, unsigned index,unsigned v_number){
     //Define NULL como 2^32
     //E marcado como (2^32 -1)
@@ -197,7 +237,7 @@ double eccentricity_matrix(double** matrix, unsigned v_number, unsigned vertex,u
     if(!status){
         //Grafos sem peso
         unsigned** response;
-        response = bfs_matrix_w(matrix,v_number,vertex);
+        response = bfs_matrix_w(matrix,vertex,v_number);
         eccentricity= max_array(response[1],v_number);
         free(response[0]);
         free(response[1]);
