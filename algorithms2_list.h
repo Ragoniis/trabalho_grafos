@@ -7,7 +7,7 @@
 #include "miscellaneous.h"
 #include "cleaners.h"
 #include <float.h>
-void** dijkstra_list(WeightedN** list,unsigned v_number,unsigned s);
+void** dijkstra_list(WeightedN** list,unsigned v_number,unsigned s,double* eccentricity);
 unsigned** bfs_w_list(WeightedN** list, unsigned index, unsigned v_number);
 ShortestPathW shortest_path_w(WeightedN** list,unsigned v_number, unsigned start, unsigned end, char status);
 void minimum_spanning_tree_list(WeightedN** list, unsigned v_number, char* s );

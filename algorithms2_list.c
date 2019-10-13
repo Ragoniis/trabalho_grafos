@@ -12,7 +12,7 @@ ShortestPathW shortest_path_w(WeightedN** list,unsigned v_number, unsigned start
     Stack s ={ NULL };
     if(status == 2){
         void** dijkstra;
-        dijkstra = dijkstra_list(list,v_number,start);
+        dijkstra = dijkstra_list(list,v_number,start,NULL);
         distance = (double*)  dijkstra[0];
         parent = (unsigned*) dijkstra[1];
         response.distance = distance[end];
@@ -99,11 +99,12 @@ unsigned** bfs_w_list(WeightedN** list, unsigned v_number,unsigned index){
 }
 
 // retorna array com o vetor dist na posição 0 e parent na 1
-void** dijkstra_list(WeightedN** list,unsigned v_number,unsigned s){
+void** dijkstra_list(WeightedN** restrict list,unsigned v_number,unsigned s, double* eccentricity){
     const unsigned infinite = ~(0x0); //Simboliza parte desconexa 
     const unsigned no_parent = ~(0x1); // Pai do primeiro vértice
     double* dist;
     unsigned* parent;
+    
     if(!(dist = (double*) malloc(sizeof(double)*v_number))){
         printf("Out of memory");
         exit(1);
@@ -112,10 +113,12 @@ void** dijkstra_list(WeightedN** list,unsigned v_number,unsigned s){
         printf("Out of memory");
         exit(1);
     }
-    for(unsigned i =0;i<v_number;i++){
-        dist[i] = DBL_MAX;
-        parent[i] = infinite;
+    unsigned* p_parent = parent;
+    for( double* pointer = dist;p_parent<(parent+v_number);p_parent++,pointer++){
+        *pointer = DBL_MAX;
+        (*p_parent) = infinite;
     }
+
     PriorityQueue* pq;
     if(!(pq = (PriorityQueue*) malloc(sizeof(PriorityQueue)))){
         printf("Out of memory");
@@ -129,19 +132,22 @@ void** dijkstra_list(WeightedN** list,unsigned v_number,unsigned s){
     HeapNode* v;
     WeightedN* pointer;
     unsigned heap_position;
+    unsigned value;
+    double key;
     while((v = extract_min(pq))){
-        //printf("Flaaaag !!! v->value: %u\n",v->value);
-        pointer = list[v->value];
-        dist[v->value] = v->key;
+        value = v->value;
+        key = v->key;
+        pointer = list[value];
+        dist[value] = key;
         while (pointer!= NULL){
             heap_position = position_array[pointer->value];
-            if(heap[heap_position].key > (v->key + pointer->weight)){
-                decrease_key(pq,pointer->value,(v->key + pointer->weight));
-                parent[pointer->value] = v->value;
+            if(heap[heap_position].key > (key + pointer->weight)){
+                decrease_key(pq,pointer->value,(key + pointer->weight));
+                parent[pointer->value] = value;
             }
             pointer = pointer->next;
         }
-        free(v);
+        free(v);    
     }
     void** response;
     if(!(response = (void**) malloc(sizeof(void*)*2))){
@@ -151,6 +157,9 @@ void** dijkstra_list(WeightedN** list,unsigned v_number,unsigned s){
     clean_PQ(pq);
     response[0] = dist;
     response[1] = parent;
+    if(eccentricity){
+        *eccentricity = key;
+    }
     return response;
 
 }
@@ -240,28 +249,33 @@ void minimum_spanning_tree_list(WeightedN** list, unsigned v_number, char* s ){
 double eccentricity_list(WeightedN** list, unsigned v_number, unsigned vertex,unsigned status){
     
     double eccentricity;
-    if(!status){
-        //Grafos sem peso
-        unsigned** response;
-        response = bfs_w_list(list,v_number,vertex);
-        eccentricity= (double) max_array(response[1],v_number);
-        free(response[0]);
-        free(response[1]);
-        free(response);
-        return eccentricity;
-    }else if(status == 2){
-        void** dijkstra;
-        double* dist;
-        //Grafos com peso positvo
-        dijkstra = dijkstra_list(list,v_number,vertex);
-        dist = (double *)dijkstra[0];
-        eccentricity= especial_max_array(dist,v_number);
-        free(dijkstra[0]);
-        free(dijkstra[1]);
-        free(dijkstra);
-        return eccentricity;
-    }else{
-        printf("Grafos com pesos negativos, não é possível calcular a Excentricidade\n");
-        return -1;
-    }
+    unsigned** response;
+    void** dijkstra;
+    double* dist;
+    switch (status)
+    {
+        case 0:
+            
+            response = bfs_w_list(list,v_number,vertex);
+            eccentricity= (double) max_array(response[1],v_number);
+            free(response[0]);
+            free(response[1]);
+            free(response);
+            return eccentricity;
+            break;
+        case 1:
+            printf("Grafos com pesos negativos, não é possível calcular a Excentricidade\n");
+            return -1;
+            break;
+        case 2:
+            //Grafos com peso positvo
+            dijkstra = dijkstra_list(list,v_number,vertex,&eccentricity);
+            free(dijkstra[0]);
+            free(dijkstra[1]);
+            free(dijkstra);
+            return eccentricity;
+            break;
+        default:
+            break;
+        }
 }

@@ -118,7 +118,7 @@ void stack_push(Stack* stack, IntNode v){
 }
 
 
-void initialize_PQ(PriorityQueue* pq,unsigned v_number){
+void initialize_PQ(PriorityQueue* restrict pq,unsigned v_number){
     HeapNode* heap;
     unsigned* position_array;
     if((heap = (HeapNode * )malloc(sizeof(HeapNode) * v_number)) && 
@@ -138,16 +138,18 @@ void initialize_PQ(PriorityQueue* pq,unsigned v_number){
     }
 }
 
-void swap(unsigned a, unsigned b, PriorityQueue* pq){
-    HeapNode* heap = (pq->heap);
+void swap(unsigned a, unsigned b, PriorityQueue* restrict pq){
+    HeapNode* heap_a = (pq->heap + a);
+    HeapNode* heap_b = (pq->heap +b);
     unsigned* position_array = (pq->position_array);
 
-    unsigned value_a = (heap[a]).value;
-    unsigned value_b = (heap[b]).value;
 
-    HeapNode temp_node = heap[a];
-    heap[a] = heap[b];
-    heap[b] = temp_node;
+    unsigned value_a = heap_a->value;
+    unsigned value_b = heap_b->value;
+
+    HeapNode temp_node = *heap_a;
+    *heap_a = *heap_b;
+    *heap_b = temp_node;
 
     unsigned temp = position_array[value_a];
     position_array[value_a]= position_array[value_b];
@@ -155,44 +157,46 @@ void swap(unsigned a, unsigned b, PriorityQueue* pq){
 
 }
 
-HeapNode* extract_min(PriorityQueue* pq){
+HeapNode* extract_min(PriorityQueue* restrict pq){
     HeapNode* heap = pq->heap;
-    if(((pq->last_element) == (infinite-1))){
+    register unsigned last_element = pq->last_element;
+    if(((last_element) == (infinite-1))){
         return NULL;
     }
-    swap(0,pq->last_element,pq);
+    swap(0,last_element,pq);
     HeapNode* min;
     if(!(min = (HeapNode*) malloc(sizeof(HeapNode)))){
         printf("Out of memory");
         exit(1);
     } 
     (*min) = heap[(pq->last_element)--];
-
-    if(((pq->last_element) == (infinite))){
+    last_element--;
+    if(((last_element) == (infinite))){
         pq->last_element--;
         return min;
     }
-
+    
     unsigned heap_postion = 0;
-    //unsigned son_position = (((heap[1]).key< (heap[2]).key ) || (pq->last_element ==1)) ?  1 : 2;
-    unsigned left_son,right_son,son_position;
-    //printf("FLAG\n");
-    //printf("last element:%u , infinite: %u \n",pq->last_element,infinite);
-    while(( pq->last_element) >=((heap_postion<<1)+1)){
-        left_son = ((heap_postion<<1)+1); 
-        right_son= ((left_son+1) > (pq->last_element)) ? (left_son) : (left_son+1);
-        son_position =  ( (heap[left_son].key) <= (heap[right_son].key) ) 
-        ? left_son 
-        : right_son ;
+    unsigned left_son,right_son;
+    unsigned son_position ;
+    
+    while( (left_son = ((heap_postion<<1)+1)) <= last_element){ 
+        right_son= (left_son+1);
+        if(right_son > last_element){
+            son_position =left_son;
+        }
+        else{
+            son_position =  ( (heap[left_son].key) <= (heap[right_son].key) ) 
+            ? left_son 
+            : right_son ;
+        }
         if(((heap[heap_postion].key) > (heap[son_position].key))){
             swap(heap_postion,son_position, pq);
             heap_postion = son_position;
         }else{
             break;
-        }
-        
+        }       
     }
-   
     return min;
 
 }
