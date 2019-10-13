@@ -201,7 +201,7 @@ void minimum_spanning_tree_list(WeightedN** list, unsigned v_number, char* s ){
     //Roda um while antes para não colocar na lista uma aresta lixo 
     while (pointer!= NULL){
             heap_position = position_array[pointer->value];
-            if(heap[heap_position].key > (pointer->weight) && (pointer->value != parent[v->value])){
+            if(heap[heap_position].key > (pointer->weight)){
                 decrease_key(pq,pointer->value,pointer->weight);
                 parent[pointer->value] = v->value;
             }

@@ -35,9 +35,11 @@ double** read_matrix_w(unsigned* v_number_pointer, unsigned* array_number,char* 
     unsigned a,b; 
     double c;
     unsigned ones_number=0;
+    (*status) = 2;
     while((fscanf(fp,"%u %u %lf",&a,&b,&c)) != EOF){
         if(c < 0.0){
             (*status) = 1;
+            printf("flaaag c:%lf e linha: %u",c,*array_number);
         }else if(c == 1){
             ones_number++;
         }

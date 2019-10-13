@@ -41,6 +41,16 @@ void free_matrix(char** matrix, unsigned v_number){
     free(matrix);
 }
 
+void free_w_matrix(double** matrix, unsigned v_number){
+    double** p;
+    double **size = matrix + v_number;
+    for ( p = matrix; p < size; p++)
+    {
+        free(*p);
+    }
+    free(matrix);
+}
+
 void clean_PQ(PriorityQueue* pq){
     HeapNode* heap = pq->heap;
     unsigned* position_array = pq->position_array;
