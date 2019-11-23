@@ -50,6 +50,23 @@ typedef struct shortest_path_response
     Stack path;
 } ShortestPathW;
 
+typedef struct bi_graph_matrix
+{
+    char** graph;
+    char* sets;
+}BipartiteGraphMatrix;
+
+typedef struct bi_graph_list
+{
+    IntNode** graph;
+    char* sets;
+}BipartiteGraphList;
+
+typedef struct matching_edge {
+    unsigned v1;
+    unsigned v2;
+    struct matching_edge *next;
+} MatchingEdge;
 
 IntNode queue_pop(Queue* q);
 void queue_push(Queue* q, unsigned index);

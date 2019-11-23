@@ -19,7 +19,7 @@ unsigned array_number = 0;
 int main(void){
     WeightedN** list;
     char status = -1;
-    list = read_list_w_int(&v_number_global,&array_number,&status,"grafo_4.txt");
+    list = read_list_w_int(&v_number_global,&array_number,&status,"grafo_3.txt");
 
     //Para testar grafo de Colaboração
     /*
@@ -94,15 +94,6 @@ int main(void){
     printf("Tempo da excentricidade %lf \n" ,sum/100);
     printf("-----------------------------------------\n");
 
-
-    printf("Pergunta 4 -------------------------------\n");
-    clock_t start2,end2;
-    start2 = clock();
-    minimum_spanning_tree_list(list,v_number_global,"output_mst");
-    end2 = clock();
-    sum = ((double) (end2 - start2))/CLOCKS_PER_SEC;
-    printf("Tempo da MST %lf \n" ,sum);
-    
     free_w_list(list,v_number_global,array_number);
     
     return 0;

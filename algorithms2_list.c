@@ -1,5 +1,5 @@
 #include "algorithms2_list.h"
-
+#include <time.h>
 
 
 
@@ -166,6 +166,9 @@ void** dijkstra_list(WeightedN** restrict list,unsigned v_number,unsigned s, dou
 
 
 void minimum_spanning_tree_list(WeightedN** list, unsigned v_number, char* s ){
+    clock_t start,end;
+    double sum;
+    start = clock();
     const unsigned infinite = ~(0x0); //Simboliza sem parent 
     //const unsigned no_parent = ~(0x1);
     unsigned* parent;
@@ -226,7 +229,9 @@ void minimum_spanning_tree_list(WeightedN** list, unsigned v_number, char* s ){
         }
         free(v);
     }
-
+    end = clock();
+    sum = ((double) (end - start))/CLOCKS_PER_SEC;
+    printf("Tempo da MST %lf \n" ,sum);
     FILE* out;
     Edge* helper;
     out = fopen(s,"w");

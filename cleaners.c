@@ -1,5 +1,14 @@
 #include "cleaners.h"
 
+
+void free_ell(MatchingEdge* p){
+    MatchingEdge* temp;
+    while(p!= NULL){
+        temp = p->next;
+        free(p);
+        p = temp;
+    }
+}
 void free_w_list(WeightedN** list, unsigned v_number,unsigned array_number){
     FILE* out;
     out = fopen("output","w");
