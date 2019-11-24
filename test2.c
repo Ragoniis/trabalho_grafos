@@ -22,7 +22,7 @@ unsigned array_number = 0;
 int main(void){
     double** matrix;
     char status;
-    matrix = read_matrix_dw(&v_number_global,&array_number,&status,"test2.txt");
+    matrix = read_matrix_dw(&v_number_global,&array_number,&status,"ER_50.txt");
     double** anwser;
     anwser = all_paths_bellman_ford_matrix(matrix,v_number_global);
     free_w_matrix(matrix,v_number_global,array_number);
