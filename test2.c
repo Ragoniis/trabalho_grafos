@@ -18,11 +18,11 @@
 unsigned v_number_global;
 unsigned array_number = 0;
 //Estudos de Caso Matriz
-
+/*
 int main(void){
     double** matrix;
     char status;
-    matrix = read_matrix_dw(&v_number_global,&array_number,&status,"ER_50.txt");
+    matrix = read_matrix_dw(&v_number_global,&array_number,&status,"test2.txt");
     double** anwser;
     anwser = all_paths_bellman_ford_matrix(matrix,v_number_global);
     free_w_matrix(matrix,v_number_global,array_number);
@@ -46,11 +46,11 @@ int main(void){
 }
 
 //Estudos de Caso Lista
-/*
+*/
 int main(void){
     WeightedN**list;
     char status;
-    list = read_list_dw_int(&v_number_global,&array_number,&status,"ER_1500.txt");
+    list = read_list_dw_int(&v_number_global,&array_number,&status,"ER_50.txt");
     double** anwser;
     anwser = all_paths_bellman_ford_list(list,v_number_global);
     if(!anwser){

@@ -6,12 +6,6 @@ double** all_paths_bellman_ford_matrix(double** matrix,unsigned v_number){
         printf("Out of Memory Error");
         exit(1);
     }
-    for(unsigned i= 0;i<v_number;i++){
-        if((response[i] = (double *)malloc (v_number*sizeof(double)))==NULL){
-            printf("Out of Memory Error");
-            exit(1);
-        }
-    }
     for(unsigned j =0;j<v_number; j++){
         if((response[j] = bellman_ford_matrix(matrix,v_number,j)) == NULL){
                 free(response);

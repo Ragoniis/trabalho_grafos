@@ -9,47 +9,19 @@ double** all_paths_bellman_ford_list(WeightedN** list,unsigned v_number){
         printf("Out of Memory Error");
         exit(1);
     }
-    if(( residual_list = (WeightedN**) calloc(v_number,sizeof(WeightedN**)) )== NULL){
-        printf("Out of Memory Error");
-        exit(1);
-    }
     WeightedN* ll;
-    for (unsigned i =0; i<v_number;i++){
-        ll = *(list+ i);
-        while(ll != NULL){ 
-            *(residual_list+(ll->value)) = put_wnode(*(residual_list+(ll->value)) ,i,ll->weight);
-            ll = ll->next;
-        }         
-    }
+    printf("KKKKKKKKk\n");
     for(unsigned i =0;i<v_number; i++){
-        if((response[i] = bellman_ford_list(residual_list,v_number,i)) == NULL){
+        printf("pipipipi\n");
+        if((response[i] = bellman_ford_list(list,v_number,i)) == NULL){
             free(response);
-            for(unsigned i =0 ;i<v_number;i++){
-            pointer = residual_list[i];
-            while((pointer)!=NULL){
-            p = pointer->next;
-            free(pointer);
-            pointer = p;
-        }
-    }
-    free(residual_list);
             return NULL;
         }
     }
-    for(unsigned i =0 ;i<v_number;i++){
-        pointer = residual_list[i];
-        while((pointer)!=NULL){
-            p = pointer->next;
-            free(pointer);
-            pointer = p;
-        }
-    }
-    free(residual_list);
     return response;
-
 } 
 
-double* bellman_ford_list(WeightedN** list,unsigned v_number,unsigned t){
+double* bellman_ford_list(WeightedN** list,unsigned v_number,unsigned s){
     double* distance; 
     if((distance = (double *) malloc(v_number*sizeof(double))) == NULL){
         printf("Out of Memory Error");
@@ -58,7 +30,7 @@ double* bellman_ford_list(WeightedN** list,unsigned v_number,unsigned t){
     for(unsigned i =0;i<v_number;i++){
         distance[i] = DBL_MAX;
     }
-    distance[t]=0;
+    distance[s]=0;
     double min;
     WeightedN* ll; 
     char changed=0;
@@ -66,18 +38,13 @@ double* bellman_ford_list(WeightedN** list,unsigned v_number,unsigned t){
         changed =0;
         for(unsigned v=0; v<v_number; v++){
              ll = list[v];
-             min = DBL_MAX;
-             //printf("OPa ai o %u\n",ll->value);
              while(ll != NULL){
-                 min = ((ll->weight + distance[ll->value]) < min) ?
-                    (ll->weight + distance[ll->value]):
-                    min;
-                 ll = ll->next;
+                if(ll->weight + distance[v]< distance[ll->value]){
+                    distance[ll->value]= ll->weight + distance[v];
+                    changed =1;
+                }
+                ll =ll->next;
              }
-            if (min<distance[v]){
-                distance[v] = min;
-                changed= 1;
-            }
         }
         if(changed == 0){
             goto RETURN;
@@ -87,21 +54,20 @@ double* bellman_ford_list(WeightedN** list,unsigned v_number,unsigned t){
     for(unsigned v=0; v<v_number; v++){
         ll = list[v];
         min = DBL_MAX;
+        ll = list[v];
         while(ll != NULL){
-                 min = ((ll->weight + distance[ll->value]) < min) ?
-                    (ll->weight + distance[ll->value]):
-                    min;
-                 ll = ll->next;
-             }
-            if (min<distance[v]){
-                distance[v] = min;
-                changed= 1;
+            if(ll->weight + distance[v]< distance[ll->value]){
+                distance[ll->value]= ll->weight + distance[v];
+                changed =1;
+                break;
             }
+            ll =ll->next;
         }
-        if(changed == 1){
-            free(distance);
-            return NULL;
-        }
+    }
+    if(changed == 1){
+        free(distance);
+        return NULL;
+    }
     RETURN:return distance;
 }
 
