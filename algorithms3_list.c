@@ -10,13 +10,15 @@ double** all_paths_bellman_ford_list(WeightedN** list,unsigned v_number){
         exit(1);
     }
     WeightedN* ll;
-    printf("KKKKKKKKk\n");
+    
+    unsigned null_counter=0;
     for(unsigned i =0;i<v_number; i++){
-        printf("pipipipi\n");
         if((response[i] = bellman_ford_list(list,v_number,i)) == NULL){
-            free(response);
-            return NULL;
+            null_counter++;
         }
+    }
+    if(null_counter == v_number){
+        return NULL;
     }
     return response;
 } 
@@ -250,21 +252,6 @@ AugEdge* strange_bfs_list(SNode** list, unsigned index, unsigned v_number,char* 
 
 }
 
-
-MatchingEdge* put_medge(MatchingEdge* p ,unsigned v1,unsigned v2){
-    MatchingEdge* new_pointer;
-    if ((new_pointer = (MatchingEdge * ) malloc(sizeof(MatchingEdge)))){
-        new_pointer->v1 = v1;
-        new_pointer->v2 = v2;
-        new_pointer->next = p;
-        ///printf("Ponteiro antes p :%p\n",p);
-        ///printf("Ponteiro depois p :%p\n",p);
-        ///printf("O que eu estou botando %u %p \n",new_pointer->value, new_pointer);
-        return new_pointer;
-    }
-    exit(1);
-
-}
 
 MatchingEdge* matching_list(BipartiteGraphList* graph, unsigned v_number){
     BipartiteGraphList* residual_graph;

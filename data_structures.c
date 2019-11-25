@@ -27,6 +27,21 @@ int main(void){
 }
 */
 
+MatchingEdge* put_medge(MatchingEdge* p ,unsigned v1,unsigned v2){
+    MatchingEdge* new_pointer;
+    if ((new_pointer = (MatchingEdge * ) malloc(sizeof(MatchingEdge)))){
+        new_pointer->v1 = v1;
+        new_pointer->v2 = v2;
+        new_pointer->next = p;
+        ///printf("Ponteiro antes p :%p\n",p);
+        ///printf("Ponteiro depois p :%p\n",p);
+        ///printf("O que eu estou botando %u %p \n",new_pointer->value, new_pointer);
+        return new_pointer;
+    }
+    exit(1);
+
+}
+
 IntNode* put_inode(IntNode* p ,unsigned int value){
     IntNode* new_pointer;
     if ((new_pointer = (IntNode *) malloc(sizeof(IntNode)))){

@@ -77,5 +77,5 @@ void stack_push(Stack* stack, IntNode v);
 void initialize_PQ(PriorityQueue* pq,unsigned v_number);
 HeapNode* extract_min(PriorityQueue* pq);
 void decrease_key(PriorityQueue* pq,unsigned vertex, double key);
-
+MatchingEdge* put_medge(MatchingEdge* p ,unsigned v1,unsigned v2);
 #endif

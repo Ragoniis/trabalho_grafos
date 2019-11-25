@@ -8,6 +8,6 @@
 #include "cleaners.h"
 double** all_paths_bellman_ford_matrix(double** matrix,unsigned v_number);
 double* bellman_ford_matrix(double** matrix,unsigned v_number,unsigned s);
-MatchingEdge* matching_matrix(BipartiteGraphList* graph, unsigned v_number);
-BipartiteGraphMatrix* check_bipartiteness_matrix(IntNode** list, unsigned v_number);
+MatchingEdge* matching_matrix(BipartiteGraphMatrix* graph, unsigned v_number);
+BipartiteGraphMatrix* check_bipartiteness_matrix(char** matrix, unsigned v_number);
 #endif

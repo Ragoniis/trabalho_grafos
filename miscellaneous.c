@@ -100,7 +100,7 @@ void print_w_matrix(double** matrix,unsigned v_number){
 }
 void print_matrix(char** matrix,unsigned v_number){
     for (unsigned i= 0;  i< v_number; i++){
-        for(unsigned j = (i+1); j< v_number;j++ ){
+        for(unsigned j = 0; j< v_number;j++ ){
             printf("linha %d coluna %d %i \n",i,j,matrix[i][j]);
         }
     }
