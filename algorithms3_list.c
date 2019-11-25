@@ -388,7 +388,7 @@ BipartiteGraphList* check_bipartiteness_list(IntNode** list, unsigned v_number){
     queue_push(&q,index);
     IntNode* linked_list;
     IntNode v;
-    while ( (q.top) != NULL)
+    WHILE:while ( (q.top) != NULL)
     {
         v = queue_pop(&q);
         linked_list=list[v.value];
@@ -406,8 +406,13 @@ BipartiteGraphList* check_bipartiteness_list(IntNode** list, unsigned v_number){
         }
     }
     for (unsigned i =0; i<v_number;i++){
-        if (color[i] == 2)
-            return NULL; //Grafo nao e conexo
+        if (color[i] == 2){
+            color[i] =0;
+            marking[i] = explored;
+            queue_push(&q,i);
+            goto WHILE;
+        }
+            
     }
     BipartiteGraphList* graph;
     if((graph = (BipartiteGraphList* ) malloc(sizeof(BipartiteGraphList)))== NULL){

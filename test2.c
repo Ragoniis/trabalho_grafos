@@ -18,11 +18,11 @@
 unsigned v_number_global;
 unsigned array_number = 0;
 //Estudos de Caso Matriz
-
+/*
 int main(void){
     char** matrix;
     clock_t start,end;
-    matrix = readMatrix(&v_number_global,&array_number,"grafo_teste_1.txt");
+    matrix = readMatrix(&v_number_global,&array_number,"test2.txt");
     BipartiteGraphMatrix* teste;
     MatchingEdge* e,* keeper;
     teste = check_bipartiteness_matrix(matrix,v_number_global);
@@ -55,7 +55,7 @@ int main(void){
     
     return 0;
 }
-/*
+
 int main(void){
     double** matrix;
     char status;

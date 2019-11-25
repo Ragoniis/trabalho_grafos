@@ -246,7 +246,7 @@ BipartiteGraphMatrix* check_bipartiteness_matrix(char** matrix, unsigned v_numbe
     queue_push(&q,index);
     IntNode* linked_list;
     IntNode v;
-    while ( (q.top) != NULL)
+    WHILE:while ( (q.top) != NULL)
     {
         v = queue_pop(&q);
         //linked_list=list[v.value];
@@ -263,8 +263,13 @@ BipartiteGraphMatrix* check_bipartiteness_matrix(char** matrix, unsigned v_numbe
         }
     }
     for (unsigned i =0; i<v_number;i++){
-        if (color[i] == 2)
-            return NULL; //Grafo nao e conexo
+        if (color[i] == 2){
+            color[i] =0;
+            marking[i] = explored;
+            queue_push(&q,i);
+            goto WHILE;
+        }
+            
     }
     BipartiteGraphMatrix* graph;
     if((graph = (BipartiteGraphMatrix* ) malloc(sizeof(BipartiteGraphMatrix)))== NULL){
